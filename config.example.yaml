@@ -1,0 +1,54 @@
+# ────────────────────────────────────────────────────────────────
+# feishu-kanban-task-orchestration 配置文件
+# 把本文件复制为 config.yaml 后填入实际值，不要把真实值提交回 git
+# ────────────────────────────────────────────────────────────────
+
+feishu:
+  # 多维表格的 base_token（URL 中 /base/<这一段>/）
+  base_token: "REPLACE_BASE_TOKEN"
+  # 表 ID（URL 中 ?table=<这一段>）
+  table_id:   "REPLACE_TABLE_ID"
+  # 接收通知的 chat_id（DM 里通过 lark-cli im +chat-list 查到 oc_xxx）
+  chat_id:    "REPLACE_CHAT_ID"
+
+# 字段 ID 映射（建表后跑 lark-cli api GET /open-apis/bitable/v1/apps/{base_token}/tables/{table_id}/fields 抓取后填入）
+field_ids:
+  任务描述:       "fldXXXXXXXX"
+  管理者:         "fldXXXXXXXX"
+  负责人:         "fldXXXXXXXX"
+  进展:           "fldXXXXXXXX"
+  澄清状态:       "fldXXXXXXXX"
+  复核状态:       "fldXXXXXXXX"
+  交付内容:       "fldXXXXXXXX"
+  任务详情:       "fldXXXXXXXX"
+  任务情况总结:   "fldXXXXXXXX"
+  开始时间:       "fldXXXXXXXX"
+  预计完成时间:   "fldXXXXXXXX"
+  是否延期:       "fldXXXXXXXX"
+  实际完成时间:   "fldXXXXXXXX"
+  最新进展记录:   "fldXXXXXXXX"
+  重要紧急程度:   "fldXXXXXXXX"
+  澄清记录:       "fldXXXXXXXX"
+  自检备注:       "fldXXXXXXXX"
+  复核反馈:       "fldXXXXXXXX"
+  Kanban链:       "fldXXXXXXXX"
+  附件:           "fldXXXXXXXX"
+
+kanban:
+  # Hermes kanban 的 tenant 名（hermes kanban list --tenant <这个>）
+  tenant: "default"
+
+paths:
+  # 状态去重缓存
+  seen_file:   "/root/.hermes/cron/state/base_event_seen.json"
+  state_file:  "/root/.hermes/cron/state/kanban_watch_state.json"
+  # 实时事件流日志（tee 写到这里）
+  log_file:    "/tmp/larkwatch.log"
+  # tmux 会话名
+  tmux_name:   "larkwatch"
+  # 事件监听脚本绝对路径（supervisor 启动时 pipe 到它）
+  listener:   "/root/.hermes/scripts/base_event_listener.py"
+
+env:
+  # lark-cli 在代理环境下的稳定开关
+  LARK_CLI_NO_PROXY: "1"
